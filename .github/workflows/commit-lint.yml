@@ -29,8 +29,17 @@ jobs:
       - name: Install dependencies
         run: yarn install --frozen-lockfile
 
+      - name: Determine commit range
+        run: |
+          if [ -z "${GITHUB_EVENT_BEFORE}" ]; then
+            export GITHUB_EVENT_BEFORE=$(git rev-parse origin/${GITHUB_BASE_REF})
+          fi
+          echo "Commit range is ${GITHUB_EVENT_BEFORE}..${GITHUB_SHA}"
+
       - name: Lint commits
-        run: yarn commitlint --from=${{ github.event.before }} --to=${{ github.sha }}
+        run: |
+          echo "Running commitlint from ${GITHUB_EVENT_BEFORE} to ${GITHUB_SHA}"
+          yarn commitlint --from=${GITHUB_EVENT_BEFORE} --to=${GITHUB_SHA}
 
       - name: Upload commitlint report
         if: failure()
