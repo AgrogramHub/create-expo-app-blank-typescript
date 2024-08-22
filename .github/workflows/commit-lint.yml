@@ -1,6 +1,16 @@
 name: Commit Lint
 
-on: [push, pull_request]
+on:
+  push:
+    branches:
+      - master
+      - main
+      - dev
+  pull_request:
+    branches:
+      - master
+      - main
+      - dev
 
 jobs:
   commitlint:
@@ -14,9 +24,22 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: '18'
+          cache: 'yarn'
 
       - name: Install dependencies
-        run: yarn install
+        run: yarn install --frozen-lockfile
 
       - name: Lint commits
-        run: yarn commitlint --from=origin/master --to=HEAD
+        run: yarn commitlint --from=${{ github.event.before }} --to=${{ github.sha }}
+
+      - name: Upload commitlint report
+        if: failure()
+        uses: actions/upload-artifact@v3
+        with:
+          name: commitlint-report
+          path: ./commitlint-report.txt
+          retention-days: 7
+
+      - name: Display failure message
+        if: failure()
+        run: echo "Commit linting failed. Please check the commitlint report for details."
