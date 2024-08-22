@@ -29,9 +29,12 @@ jobs:
       - name: Install dependencies
         run: yarn install --frozen-lockfile
 
-      - name: Get last commit message
+      - name: Get commit details
+        id: commit_details
         run: |
-          echo "Last commit message: $(git log -1 --pretty=format:%s)"
+          echo "LAST_COMMIT_MESSAGE=$(git log -1 --pretty=format:%s)" >> $GITHUB_ENV
+          echo "GITHUB_EVENT_BEFORE=${GITHUB_EVENT_BEFORE}" >> $GITHUB_ENV
+          echo "GITHUB_SHA=${GITHUB_SHA}" >> $GITHUB_ENV
 
       - name: Run commitlint
         run: |
@@ -51,7 +54,7 @@ jobs:
           body: |
             Commitlint errors were detected in the latest commit(s) in the ${{ github.repository }} repository.
             Commit range: ${GITHUB_EVENT_BEFORE} to ${GITHUB_SHA}.
-            Last commit message: $(git log -1 --pretty=format:%s)
+            Last commit message: ${{ env.LAST_COMMIT_MESSAGE }}
           to: 'ceser446@gmail.com'
           from: ${{ secrets.MAIL_USERNAME }}
           secure: true
