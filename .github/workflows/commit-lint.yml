@@ -31,10 +31,10 @@ jobs:
 
       - name: Determine commit range
         run: |
-          if [ -z "${GITHUB_EVENT_BEFORE}" ]; then
-            export GITHUB_EVENT_BEFORE=$(git rev-parse origin/${GITHUB_BASE_REF})
-          fi
-          echo "Commit range is ${GITHUB_EVENT_BEFORE}..${GITHUB_SHA}"
+          git fetch --depth=1 origin +refs/heads/${GITHUB_BASE_REF}:refs/remotes/origin/${GITHUB_BASE_REF}
+           export GITHUB_EVENT_BEFORE=$(git rev-parse origin/${GITHUB_BASE_REF})
+           echo "GITHUB_EVENT_BEFORE=${GITHUB_EVENT_BEFORE}"
+           echo "GITHUB_SHA=${GITHUB_SHA}"
 
       - name: Lint commits
         run: |
