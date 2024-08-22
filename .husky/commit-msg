@@ -8,12 +8,12 @@ echo "Commit template file not found."
 exit 1
 fi
 
-# npx --no-install commitlint --edit $1 || {
-#   echo "$COMMIT_TEMPLATE"
+npx --no-install commitlint --edit $1 || {
+  echo "$COMMIT_TEMPLATE"
 
-# exit 1
-# }
+exit 1
+}
 
-# ts-node "./check-tense-commit.ts" $1 || {
-# exit 1
-# }
+ts-node "./check-tense-commit.ts" $1 || {
+exit 1
+}
