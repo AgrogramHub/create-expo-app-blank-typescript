@@ -33,6 +33,7 @@ jobs:
         id: commitlint_check
         run: |
           git log -1 --pretty=%B | yarn commitlint
+          echo ${{steps.commitlint_check}}
 
       - name: Send email on commitlint failure
         if: ${{ steps.commitlint_check.outcome == 'failure' }}
