@@ -35,32 +35,28 @@ jobs:
           # Get all commit hashes
           COMMITS=$(git log --pretty=format:"%H" -n 2)
 
-          # Extract the current and previous SHA
-          CURRENT_SHA=$(echo "$COMMITS" | head -n 1)
-          PREVIOUS_SHA=$(echo "$COMMITS" | tail -n 1)
+          # Count the number of commits
+          COMMITS_COUNT=$(echo "$COMMITS" | wc -l)
 
-          # Get the latest commit message
-          LAST_COMMIT_MESSAGE=$(git log -1 --pretty=format:%s)
-
-          # Check if we have at least two commits
-          if [ "$CURRENT_SHA" == "$PREVIOUS_SHA" ]; then
+          # Extract the current and previous SHA if we have at least 2 commits
+          if [ "$COMMITS_COUNT" -ge 2 ]; then
+            CURRENT_SHA=$(echo "$COMMITS" | head -n 1)
+            PREVIOUS_SHA=$(echo "$COMMITS" | tail -n 1)
+            LAST_COMMIT_MESSAGE=$(git log -1 --pretty=format:%s)
+            echo "LAST_COMMIT_MESSAGE=${LAST_COMMIT_MESSAGE}" >> $GITHUB_ENV
+            echo "CURRENT_SHA=${CURRENT_SHA}" >> $GITHUB_ENV
+            echo "PREVIOUS_SHA=${PREVIOUS_SHA}" >> $GITHUB_ENV
+          else
             echo "Not enough commits to determine a range. Skipping commitlint."
-            exit 1
+            echo "CURRENT_SHA=$(git rev-parse HEAD)" >> $GITHUB_ENV
+            echo "PREVIOUS_SHA=$(git rev-parse HEAD)" >> $GITHUB_ENV
           fi
-
-          # Output to the environment
-          echo "LAST_COMMIT_MESSAGE=${LAST_COMMIT_MESSAGE}" >> $GITHUB_ENV
-          echo "CURRENT_SHA=${CURRENT_SHA}" >> $GITHUB_ENV
-          echo "PREVIOUS_SHA=${PREVIOUS_SHA}" >> $GITHUB_ENV
 
       - name: Run commitlint
+        if: env.PREVIOUS_SHA != env.CURRENT_SHA
         run: |
-          if [ "$CURRENT_SHA" != "$PREVIOUS_SHA" ]; then
           echo "Running commitlint from ${PREVIOUS_SHA} to ${CURRENT_SHA}"
           yarn commitlint --from=${PREVIOUS_SHA} --to=${CURRENT_SHA}
-          else
-            echo "Only one commit found. Skipping commitlint."
-          fi
         continue-on-error: false
 
       - name: Send email on commitlint failure
