@@ -8,7 +8,6 @@ on:
       - '**/*.ts'
       - '.github/workflows/commit-check.yml'
       - '.github/workflows/commit-template.txt'
-      - '.husky/commit-msg' # commit-msg dosyanızın yolu
 
 jobs:
   check:
@@ -26,13 +25,23 @@ jobs:
       - name: Install dependencies
         run: yarn install
 
-      - name: Run commit-msg hook
+      - name: Check commit message format
         run: |
-          # Ensure commit-msg script is executable
-          chmod +x .husky/commit-msg
-          # Run the commit-msg script with the actual commit-template file
-          .husky/commit-msg .github/workflows/commit-template.txt || exit 1
+          COMMIT_TEMPLATE_FILE="./commit-template.txt"
+          if [ -f "$COMMIT_TEMPLATE_FILE" ]; then
+            COMMIT_TEMPLATE=$(cat "$COMMIT_TEMPLATE_FILE")
+          else
+            echo "Commit template file not found."
+            exit 1
+          fi
+
+          npx --no-install commitlint --edit $1 || {
+            echo "$COMMIT_TEMPLATE"
+            exit 1
+          }
 
       - name: Check commit tense
         run: |
-          npx ts-node check-tense-commit.ts .github/workflows/commit-template.txt || exit 1
+          npx ts-node check-tense-commit.ts "$1" || {
+            exit 1
+          }
