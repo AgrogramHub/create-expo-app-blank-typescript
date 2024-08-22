@@ -1,31 +1,19 @@
 # commit format
 
-COMMIT_TEMPLATE="
-Commit Message Format
-Tip: (feat, fix, change, chore, docs, style, perf, test) - (lowercase)
-Scope: (module, component, file, etc...) - (kebab-case)
-Subject: (short description) - (lowercase)
-Length: (max 100 characters)
-
-Example:
-Good Commit Message
-feat: add new feature
-fix(module): fix bug
-
-Bad Commit Message
-feat:add new feature
-fix(module):fix bug
-fix(module) : fix bug
-fix(module) : fix bug
-fix (module): fix bug
-fix(module): fix bug.
-"
+COMMIT_TEMPLATE_FILE="$(dirname "$0")/commit-template.txt"
+if [ -f "$COMMIT_TEMPLATE_FILE" ]; then
+COMMIT_TEMPLATE=$(cat "$COMMIT_TEMPLATE_FILE")
+else
+echo "Commit template file not found."
+exit 1
+fi
 
 npx --no-install commitlint --edit $1 || {
   echo "$COMMIT_TEMPLATE"
+
 exit 1
 }
 
-ts-node check-tense-commit.ts "$1" || {
+ts-node "./check-tense-commit.ts" $1 || {
 exit 1
 }
