@@ -5,9 +5,7 @@ on:
     branches:
       - master # veya kullanmakta olduğunuz ana branch adı
     paths:
-      - '**/*.ts'
-      - '.github/workflows/commit-check.yml'
-      - '.github/workflows/commit-template.txt'
+      - '**/*'
 
 jobs:
   check:
