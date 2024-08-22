@@ -40,12 +40,3 @@ jobs:
         run: |
           echo "Running commitlint from ${GITHUB_EVENT_BEFORE} to ${GITHUB_SHA}"
           yarn commitlint --from=${GITHUB_EVENT_BEFORE} --to=${GITHUB_SHA}
-
-      - name: Check linting result
-        run: |
-          if [ $? -eq 0 ]; then
-            echo "Commit linting passed."
-          else
-            echo "Commit linting failed. Please check the logs for details."
-            exit 1
-          fi
