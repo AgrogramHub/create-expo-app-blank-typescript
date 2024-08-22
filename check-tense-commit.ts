@@ -9,6 +9,11 @@ const doc = nlp(commitMessage);
 const verbs = doc.verbs().out('array');
 console.log('Detected Verbs: ', verbs);
 
+if (verbs.length === 0) {
+  console.log('Commit message must contain at least one verb');
+  process.exit(1);
+}
+
 const isPastTense = verbs.some((verb: string) => {
   const pastTense = nlp(verb).verbs().toPastTense().out('text');
   return pastTense === verb;
