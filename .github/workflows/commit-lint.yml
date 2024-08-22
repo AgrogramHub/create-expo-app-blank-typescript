@@ -39,6 +39,10 @@ jobs:
 
       - name: Run commitlint
         run: |
+          if [ -z "${GITHUB_EVENT_BEFORE}" ]; then
+            echo "GITHUB_EVENT_BEFORE is empty. Skipping commitlint check."
+            exit 0
+          fi
           echo "Running commitlint from ${GITHUB_EVENT_BEFORE} to ${GITHUB_SHA}"
           yarn commitlint --from=${GITHUB_EVENT_BEFORE} --to=${GITHUB_SHA}
         continue-on-error: false
