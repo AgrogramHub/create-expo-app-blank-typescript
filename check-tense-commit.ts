@@ -6,7 +6,7 @@ const commitMessage = fs.readFileSync(commitMessageFile, 'utf8').trim();
 console.log(commitMessage);
 
 const doc = nlp(commitMessage);
-const verbs = doc.verbs().out('array');
+const verbs = doc.verbs().terms().out('array'); // Verbs'i array olarak alıyoruz
 console.log('Detected Verbs: ', verbs);
 
 if (verbs.length === 0) {
@@ -16,6 +16,7 @@ if (verbs.length === 0) {
 
 const isPastTense = verbs.some((verb: string) => {
   const pastTense = nlp(verb).verbs().toPastTense().out('text');
+  console.log(`Verb: ${verb}, Past Tense: ${pastTense}`);
   return pastTense === verb;
 });
 
@@ -23,5 +24,5 @@ if (isPastTense) {
   console.log('Commit message is in past tense');
   process.exit(1);
 } else {
-  console.log('Commit message is not in past tense');
+  console.log('Commit message is valid');
 }
