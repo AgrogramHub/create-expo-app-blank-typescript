@@ -29,19 +29,9 @@ jobs:
       - name: Install dependencies
         run: yarn install --frozen-lockfile
 
-      - name: Determine commit range
-        run: |
-          git fetch --all
-          git branch -r
-          if [ -z "${GITHUB_EVENT_BEFORE}" ]; then
-            if [ -n "${GITHUB_HEAD_REF}" ]; then
-              export GITHUB_EVENT_BEFORE=$(git rev-parse origin/${GITHUB_HEAD_REF})
-            else
-              export GITHUB_EVENT_BEFORE=$(git rev-parse origin/${GITHUB_BASE_REF})
-            fi
-          fi
-          echo "Commit range is ${GITHUB_EVENT_BEFORE}..${GITHUB_SHA}"
-        shell: /usr/bin/bash -e {0}
+      - name: Get last commit
+        id: last_commit
+        run: echo "::set-output name=commit::$(git rev-parse HEAD)"
 
       - name: Lint commits
         run: |
