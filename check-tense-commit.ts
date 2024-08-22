@@ -13,12 +13,12 @@ console.log(verbs);
 
 // Eğer herhangi bir fiil geçmiş zamanda ise hata döndür
 let isPastTense = false;
-verbs.forEach((verb: { conjugation: string }) => {
-  if (verb.conjugation === 'PastTense') {
+for (const verb of verbs) {
+  if (verb.PastTense) {
     isPastTense = true;
+    break;
   }
-});
-console.log(isPastTense);
+}
 
 if (isPastTense) {
   console.error('Commit messages should be in present tense.');
