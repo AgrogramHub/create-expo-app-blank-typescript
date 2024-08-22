@@ -33,7 +33,7 @@ jobs:
         id: commit_details
         run: |
           # Get all commit hashes
-          COMMITS=$(git log --pretty=format:"%H" | head -n 2)
+          COMMITS=$(git log --pretty=format:"%H" -n 2)
 
           # Extract the current and previous SHA
           CURRENT_SHA=$(echo "$COMMITS" | head -n 1)
@@ -42,6 +42,12 @@ jobs:
           # Get the latest commit message
           LAST_COMMIT_MESSAGE=$(git log -1 --pretty=format:%s)
 
+          # Check if we have at least two commits
+          if [ "$CURRENT_SHA" == "$PREVIOUS_SHA" ]; then
+            echo "Not enough commits to determine a range. Skipping commitlint."
+            exit 1
+          fi
+
           # Output to the environment
           echo "LAST_COMMIT_MESSAGE=${LAST_COMMIT_MESSAGE}" >> $GITHUB_ENV
           echo "CURRENT_SHA=${CURRENT_SHA}" >> $GITHUB_ENV
@@ -49,8 +55,12 @@ jobs:
 
       - name: Run commitlint
         run: |
+          if [ "$CURRENT_SHA" != "$PREVIOUS_SHA" ]; then
           echo "Running commitlint from ${PREVIOUS_SHA} to ${CURRENT_SHA}"
           yarn commitlint --from=${PREVIOUS_SHA} --to=${CURRENT_SHA}
+          else
+            echo "Only one commit found. Skipping commitlint."
+          fi
         continue-on-error: false
 
       - name: Send email on commitlint failure
