@@ -10,6 +10,7 @@ console.log('Commit message:', commitMsg);
 // NLP ile mesajı analiz et
 const doc = nlp(commitMsg);
 const verbs = doc.verbs().out('array');
+console.log('Verbs:', verbs);
 
 // Eğer herhangi bir fiil geçmiş zamanda ise hata döndür
 let isPastTense = false;
