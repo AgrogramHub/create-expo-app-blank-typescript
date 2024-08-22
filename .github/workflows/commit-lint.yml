@@ -32,12 +32,15 @@ jobs:
       - name: Get commit details
         id: commit_details
         run: |
+          # Get all commit hashes
+          COMMITS=$(git log --pretty=format:"%H" | head -n 2)
+
+          # Extract the current and previous SHA
+          CURRENT_SHA=$(echo "$COMMITS" | head -n 1)
+          PREVIOUS_SHA=$(echo "$COMMITS" | tail -n 1)
+
           # Get the latest commit message
           LAST_COMMIT_MESSAGE=$(git log -1 --pretty=format:%s)
-
-          # Get the current and previous commit hashes
-          CURRENT_SHA=$(git rev-parse HEAD)
-          PREVIOUS_SHA=$(git rev-parse HEAD~1)
 
           # Output to the environment
           echo "LAST_COMMIT_MESSAGE=${LAST_COMMIT_MESSAGE}" >> $GITHUB_ENV
