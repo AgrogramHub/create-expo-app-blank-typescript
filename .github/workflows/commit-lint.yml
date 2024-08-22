@@ -33,7 +33,12 @@ jobs:
         id: commitlint_check
         run: |
           git log -1 --pretty=%B | yarn commitlint
-          echo ${{steps.commitlint_check}}
+        continue-on-error: true # Adım başarısız olsa bile iş akışı devam edecek
+
+      - name: Debugging Commitlint
+        if: ${{ always() }} # Bu adım her zaman çalışacak, commitlint sonucunu görmek için
+        run: |
+          echo "Commitlint outcome: ${{ steps.commitlint_check.outcome }}"
 
       - name: Send email on commitlint failure
         if: ${{ steps.commitlint_check.outcome == 'failure' }}
