@@ -27,6 +27,5 @@ exit 1
 }
 
 npx --no-install ts-node check-tense-commit.ts "$1" || {
-echo "Commit messages should be in present tense."
 exit 1
 }

@@ -7,20 +7,16 @@ console.log(commitMessage);
 
 const doc = nlp(commitMessage);
 const verbs = doc.verbs().out('array');
-console.log(verbs);
+console.log('Detected Verbs: ', verbs);
 
-let isPastTense = false;
-
-verbs.forEach((verb: string) => {
+const isPastTense = verbs.some((verb: string) => {
   const pastTense = nlp(verb).verbs().toPastTense().out('text');
-  console.log('Past Tense: ', pastTense);
-
-  if (pastTense !== verb) {
-    isPastTense = true;
-  }
+  return pastTense === verb;
 });
 
 if (isPastTense) {
   console.log('Commit message is in past tense');
   process.exit(1);
+} else {
+  console.log('Commit message is not in past tense');
 }
