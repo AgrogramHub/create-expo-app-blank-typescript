@@ -1,24 +1,22 @@
 import nlp from 'compromise';
+import fs from 'fs';
 
-const commitMessage = process.argv[2];
+const commitMessageFile = process.argv[2];
+const commitMessage = fs.readFileSync(commitMessageFile, 'utf8').trim();
 console.log(commitMessage);
 
 const doc = nlp(commitMessage);
-console.log(doc.verbs());
-
 const verbs = doc.verbs().out('array');
 console.log(verbs);
 
 let isPastTense = false;
 
-verbs.forEach((verb: { terms: () => any[] }) => {
-  console.log(verb.terms());
+verbs.forEach((verb: string) => {
+  const pastTense = nlp(verb).verbs().toPastTense().out('text');
+  console.log('Past Tense: ', pastTense);
 
-  if (verb.terms().length > 0) {
-    const verbTerm = verb.terms()[0];
-    if (verbTerm.tags.includes('PastTense')) {
-      isPastTense = true;
-    }
+  if (pastTense !== verb) {
+    isPastTense = true;
   }
 });
 
