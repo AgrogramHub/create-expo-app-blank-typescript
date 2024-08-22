@@ -31,7 +31,6 @@ jobs:
 
       - name: Get last commit
         run: |
-          git fetch --all
           LAST_COMMIT_MESSAGE=$(git log -1 --pretty=format:%s)
           echo "Last commit message: ${LAST_COMMIT_MESSAGE}"
 
