@@ -1,0 +1,34 @@
+name: Commit Message Check
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - '**/*.ts'
+      - '.husky/commit-msg'
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  commit-message-check:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18' # Node.js sürümünü ihtiyacınıza göre ayarlayın
+
+      - name: Install dependencies
+        run: |
+          yarn install  # veya npm install, hangi package manager'ı kullanıyorsanız
+
+      - name: Run commit message check
+        run: |
+          npx ts-node .husky/check-tense-commit.ts "${{ github.event.head_commit.message }}"
+        env:
+          COMMIT_TEMPLATE_FILE: '.husky/commit-template.txt'
