@@ -32,7 +32,7 @@ jobs:
       - name: Get commit details
         id: commit_details
         run: |
-          echo "LAST_COMMIT_MESSAGE=$(git log -1 --pretty=format:%s)" >> $GITHUB_ENV
+          echo "$(git log -1 --pretty=format:%s)"
           echo "GITHUB_SHA=${GITHUB_SHA}" >> $GITHUB_ENV
 
       - name: Run commitlint
@@ -53,7 +53,7 @@ jobs:
           body: |
             Commitlint errors were detected in the latest commit(s) in the ${{ github.repository }} repository.
             Commit range: ${{ github.event.before }}...${{ github.sha }}
-            Last commit message: ${{ env.LAST_COMMIT_MESSAGE }}
+            Last commit message: ${{ github.event.head_commit.message}}
           to: 'ceser446@gmail.com'
           from: ${{ secrets.MAIL_USERNAME }}
           secure: true
