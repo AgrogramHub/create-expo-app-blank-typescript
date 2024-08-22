@@ -30,8 +30,10 @@ jobs:
         run: yarn install --frozen-lockfile
 
       - name: Get last commit
-        id: last_commit
-        run: echo "::set-output name=commit::$(git rev-parse HEAD)"
+        run: |
+          git fetch --all
+          LAST_COMMIT_MESSAGE=$(git log -1 --pretty=format:%s)
+          echo "Last commit message: ${LAST_COMMIT_MESSAGE}"
 
       - name: Lint commits
         run: |
