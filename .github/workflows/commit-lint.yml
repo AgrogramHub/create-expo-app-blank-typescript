@@ -44,6 +44,7 @@ jobs:
       - name: Generate commitlint report
         run: |
           yarn commitlint --from=${GITHUB_EVENT_BEFORE} --to=${GITHUB_SHA} > ./commitlint-report.txt
+          ls -l ./commitlint-report.txt
 
       - name: Check for commitlint report
         run: |
@@ -55,12 +56,10 @@ jobs:
           fi
 
       - name: Upload commitlint report
-        if: failure()
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v2
         with:
           name: commitlint-report
           path: ./commitlint-report.txt
-          retention-days: 7
 
       - name: Display failure message
         if: failure()
