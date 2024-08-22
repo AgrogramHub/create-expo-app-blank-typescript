@@ -6,29 +6,38 @@ const commitMessage = fs.readFileSync(commitMessageFile, 'utf8').trim();
 console.log(commitMessage);
 
 const doc = nlp(commitMessage);
-const verbs = doc.verbs().terms().out('array');
-console.log('Detected Verbs: ', verbs);
+const tokens = doc.terms().out('array'); // Mesajı tokenlara ayırıyoruz
+console.log('Detected Tokens: ', tokens);
 
-if (verbs.length === 0) {
-  console.log('Commit message must contain at least one verb');
+if (tokens.length === 0) {
+  console.log('Commit message must contain at least one token');
   process.exit(1);
 }
 
-const isPastTense = verbs.some((verb: string) => {
-  const pastTense = nlp(verb).verbs().toPastTense().out('text');
-  console.log(`Verb: ${verb}, Past Tense: ${pastTense}`);
-  return pastTense === verb;
+const isPastTense = tokens.some((token: string) => {
+  const tokenDoc = nlp(token);
+  const tokenVerbs = tokenDoc.verbs().out('array');
+  if (tokenVerbs.length > 0) {
+    const pastTense = tokenDoc.verbs().toPastTense().out('text');
+    console.log(`Token: ${token}, Past Tense: ${pastTense}`);
+    return pastTense === token;
+  }
+  return false;
 });
-
-const isVerb = verbs.some((verb: string) => nlp(verb).verbs().out('array').length > 0);
-if (!isVerb) {
-  console.log('Commit message must contain at least one verb');
-  process.exit(1);
-}
 
 if (isPastTense) {
   console.log('Commit message is in past tense');
   process.exit(1);
+}
+
+const isVerb = tokens.some((token: string) => {
+  const tokenDoc = nlp(token);
+  return tokenDoc.verbs().out('array').length > 0;
+});
+
+if (!isVerb) {
+  console.log('Commit message must contain at least one verb');
+  process.exit(1);
 } else {
-  console.log('Commit message is valid');
+  console.log('Commit message is in present tense and contains at least one verb');
 }
