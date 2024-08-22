@@ -17,3 +17,4 @@ fi
 # ts-node "./check-tense-commit.ts" $1 || {
 # exit 1
 # }
+#deneme
