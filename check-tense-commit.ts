@@ -1,16 +1,15 @@
-import nlp from 'compromise';
-import * as fs from 'fs';
-
+const fs = require('fs');
+const nlp = require('compromise');
 const commitMsgFile = process.argv[2];
 
 // Commit mesajını oku
 const commitMsg = fs.readFileSync(commitMsgFile, 'utf8').trim();
-console.log('Commit message:', commitMsg);
+console.log(commitMsg);
 
 // NLP ile mesajı analiz et
 const doc = nlp(commitMsg);
-const verbs = doc.verbs().out('array');
-console.log('Verbs:', verbs);
+const verbs = doc.verbs().data();
+console.log(verbs);
 
 // Eğer herhangi bir fiil geçmiş zamanda ise hata döndür
 let isPastTense = false;
@@ -19,7 +18,6 @@ verbs.forEach((verb: { conjugation: string }) => {
     isPastTense = true;
   }
 });
-
 console.log(isPastTense);
 
 if (isPastTense) {
