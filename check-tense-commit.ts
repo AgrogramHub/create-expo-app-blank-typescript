@@ -8,15 +8,14 @@ console.log(verbs);
 
 let isPastTense = false;
 
-verbs.forEach((verb: string) => {
-  const tense = nlp(verb).verbs().conjugate()[0];
-  console.log(tense);
+verbs.forEach((verb: { terms: () => any[] }) => {
+  console.log(verb.terms());
 
-  if (
-    (tense as { PastTense?: string }).PastTense &&
-    (tense as { PastTense?: string }).PastTense === verb
-  ) {
-    isPastTense = true;
+  if (verb.terms().length > 0) {
+    const verbTerm = verb.terms()[0];
+    if (verbTerm.tags.includes('PastTense')) {
+      isPastTense = true;
+    }
   }
 });
 
