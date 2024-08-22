@@ -25,6 +25,7 @@ export default [
       'webpack.config.js',
       'metro.config.js',
       'babel.config.js',
+      'check-tense-commit.ts',
     ],
     rules: {
       'no-unused-vars': 'off',
