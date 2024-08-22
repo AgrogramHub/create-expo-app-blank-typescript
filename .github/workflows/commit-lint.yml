@@ -29,18 +29,12 @@ jobs:
       - name: Install dependencies
         run: yarn install --frozen-lockfile
 
-      - name: Get commit details
-        id: commit_details
-        run: |
-          echo "$(git log -1 --pretty=format:%s)"
-
       - name: Run commitlint
         run: |
           git log -1 --pretty=%B | yarn commitlint
-        continue-on-error: false
 
       - name: Send email on commitlint failure
-        if: failure()
+        if: ${{ failure() }}
         uses: dawidd6/action-send-mail@v3
         with:
           server_address: smtp.gmail.com
@@ -51,7 +45,7 @@ jobs:
           body: |
             Commitlint errors were detected in the latest commit(s) in the ${{ github.repository }} repository.
             Commit range: ${{ github.event.before }} to ${{ github.sha }}
-            Last commit message: ${{ github.event.head_commit.message}}
+            Last commit message: ${{ github.event.head_commit.message }}
           to: 'ceser446@gmail.com'
           from: ${{ secrets.MAIL_USERNAME }}
           secure: true
