@@ -33,12 +33,11 @@ jobs:
         id: commit_details
         run: |
           echo "LAST_COMMIT_MESSAGE=$(git log -1 --pretty=format:%s)" >> $GITHUB_ENV
-          echo "GITHUB_EVENT_BEFORE=${GITHUB_EVENT_BEFORE}" >> $GITHUB_ENV
           echo "GITHUB_SHA=${GITHUB_SHA}" >> $GITHUB_ENV
 
       - name: Run commitlint
         run: |
-          echo "Running commitlint from ${GITHUB_EVENT_BEFORE} to ${GITHUB_SHA}"
+          echo "Running commitlint to ${GITHUB_SHA}"
           yarn commitlint --from=${GITHUB_EVENT_BEFORE} --to=${GITHUB_SHA}
         continue-on-error: false
 
@@ -53,7 +52,7 @@ jobs:
           subject: Commitlint failed in ${{ github.repository }}
           body: |
             Commitlint errors were detected in the latest commit(s) in the ${{ github.repository }} repository.
-            Commit range: ${{ env.GITHUB_EVENT_BEFORE }} to ${{ env.GITHUB_SHA }}.
+            Commit range: ${{ github.event.before }}...${{ github.sha }}
             Last commit message: ${{ env.LAST_COMMIT_MESSAGE }}
           to: 'ceser446@gmail.com'
           from: ${{ secrets.MAIL_USERNAME }}
