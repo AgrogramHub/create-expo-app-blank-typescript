@@ -27,7 +27,7 @@ jobs:
 
       - name: Check commit message format
         run: |
-          COMMIT_TEMPLATE_FILE=".github/workflows/commit-template.txt"
+          COMMIT_TEMPLATE_FILE="$(dirname "$0")/commit-template.txt"
           if [ -f "$COMMIT_TEMPLATE_FILE" ]; then
             COMMIT_TEMPLATE=$(cat "$COMMIT_TEMPLATE_FILE")
           else
