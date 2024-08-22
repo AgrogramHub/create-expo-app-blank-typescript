@@ -29,9 +29,6 @@ jobs:
       - name: Install dependencies
         run: yarn install --frozen-lockfile
 
-      - name: Fetch all Git references
-        run: git fetch --all
-
       - name: Get commit details
         id: commit_details
         run: |
@@ -39,7 +36,7 @@ jobs:
 
       - name: Run commitlint
         run: |
-          yarn commitlint --from ${{ github.event.before }} --to ${{ github.sha }}
+          yarn commitlint --to ${{ github.sha }} --from ${{ github.event.before }}
         continue-on-error: false
 
       - name: Send email on commitlint failure
