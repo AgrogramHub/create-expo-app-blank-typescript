@@ -24,7 +24,11 @@ if (verbs.length === 0) {
   process.exit(1);
 }
 
-const presentTenseMessage = nlp(commitMessage).verbs().toPresentTense().out('text');
+const presentTenseMessage = nlp(commitMessage.split(':')[1])
+  .verbs()
+  .toPresentTense()
+  .out('text');
+console.log('Present Tense: ' + presentTenseMessage);
 
 const isPastTense = nlp(presentTenseMessage)
   .verbs()
