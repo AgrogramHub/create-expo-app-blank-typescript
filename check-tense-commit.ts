@@ -16,29 +16,14 @@ try {
   process.exit(1);
 }
 
-// 'feat(commit-template):' gibi başlık ve kapsam kısmını atla
-const messageBody = commitMessage.split(':')[1]?.trim() || '';
-console.log('Message body:', messageBody); // Debug line
+const doc = nlp(commitMessage.split(':')[1].trim());
+const verbs = doc.verbs().terms().out('array');
 
-// Mesajı kelimelere ayır
-const tokens = messageBody.split(/\s+/);
-console.log('Tokens:', tokens); // Debug line
-
-// Fiil olup olmadığını kontrol et
-const doc = nlp(messageBody);
-const verbs = doc.verbs().out('array');
-console.log('Verbs:', verbs); // Debug line
-
-const hasVerb = tokens.some((token) => {
-  return verbs.includes(token);
-});
-
-if (!hasVerb) {
+if (verbs.length === 0) {
   console.log('Commit message must contain at least one verb');
   process.exit(1);
 }
 
-// Geçmiş zaman kontrolü
 const isPastTense = verbs.some((verb: string) => {
   const pastTense = nlp(verb).verbs().toPastTense().out('text');
   return pastTense === verb;
