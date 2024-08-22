@@ -27,21 +27,17 @@ jobs:
 
       - name: Check commit message format
         run: |
-          COMMIT_TEMPLATE_FILE="./commit-template.txt"
-          if [ -f "$COMMIT_TEMPLATE_FILE" ]; then
-            COMMIT_TEMPLATE=$(cat "$COMMIT_TEMPLATE_FILE")
-          else
-            echo "Commit template file not found."
-            exit 1
-          fi
+          # Install commitlint globally if needed
+          yarn global add @commitlint/cli @commitlint/config-conventional
 
-          npx --no-install commitlint --edit $1 || {
-            echo "$COMMIT_TEMPLATE"
+          # Check commit messages
+          npx --no-install commitlint --from=HEAD~1 --to=HEAD || {
+            echo "Commit message format is incorrect."
             exit 1
           }
 
       - name: Check commit tense
         run: |
-          npx ts-node check-tense-commit.ts "$1" || {
+          npx ts-node check-tense-commit.ts || {
             exit 1
           }
