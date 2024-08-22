@@ -41,26 +41,7 @@ jobs:
           echo "Running commitlint from ${GITHUB_EVENT_BEFORE} to ${GITHUB_SHA}"
           yarn commitlint --from=${GITHUB_EVENT_BEFORE} --to=${GITHUB_SHA}
 
-      - name: Generate commitlint report
+      - name: Lint commit message
         run: |
-          yarn commitlint --from=${GITHUB_EVENT_BEFORE} --to=${GITHUB_SHA} > ./commitlint-report.txt
-          ls -l ./commitlint-report.txt
-
-      - name: Check for commitlint report
-        run: |
-          if [ -f ./commitlint-report.txt ]; then
-            echo "Commitlint report exists."
-          else
-            echo "Commitlint report does not exist."
-            exit 1
-          fi
-
-      - name: Upload commitlint report
-        uses: actions/upload-artifact@v2
-        with:
-          name: commitlint-report
-          path: ./commitlint-report.txt
-
-      - name: Display failure message
-        if: failure()
-        run: echo "Commit linting failed. Please check the commitlint report for details."
+          echo "Running commitlint on commit message"
+          yarn commitlint --edit
