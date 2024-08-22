@@ -5,7 +5,7 @@
   "trailingComma": "es5",
   "printWidth": 90,
   "arrowParens": "always",
-  "endOfLine": "auto",
+  "endOfLine": "lf",
   "bracketSpacing": true,
   "useTabs": false,
   "importOrderSeparation": true,
