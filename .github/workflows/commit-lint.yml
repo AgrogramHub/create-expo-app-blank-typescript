@@ -39,7 +39,7 @@ jobs:
 
       - name: Run commitlint
         run: |
-          yarn commitlint --from=${{ github.event.before }} --to=${{ github.sha }}
+          yarn commitlint --from=HEAD~1 --to=HEAD
         continue-on-error: false
 
       - name: Send email on commitlint failure
