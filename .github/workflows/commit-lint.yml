@@ -53,7 +53,7 @@ jobs:
           subject: Commitlint failed in ${{ github.repository }}
           body: |
             Commitlint errors were detected in the latest commit(s) in the ${{ github.repository }} repository.
-            Commit range: ${GITHUB_EVENT_BEFORE} to ${GITHUB_SHA}.
+            Commit range: ${{ env.GITHUB_EVENT_BEFORE }} to ${{ env.GITHUB_SHA }}.
             Last commit message: ${{ env.LAST_COMMIT_MESSAGE }}
           to: 'ceser446@gmail.com'
           from: ${{ secrets.MAIL_USERNAME }}
