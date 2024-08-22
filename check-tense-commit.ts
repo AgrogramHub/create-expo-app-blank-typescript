@@ -5,6 +5,7 @@ const commitMsgFile = process.argv[2];
 
 // Commit mesajını oku
 const commitMsg = fs.readFileSync(commitMsgFile, 'utf8').trim();
+console.log('Commit message:', commitMsg);
 
 // NLP ile mesajı analiz et
 const doc = nlp(commitMsg);
@@ -17,6 +18,8 @@ verbs.forEach((verb: { conjugation: string }) => {
     isPastTense = true;
   }
 });
+
+console.log(isPastTense);
 
 if (isPastTense) {
   console.error('Commit messages should be in present tense.');
