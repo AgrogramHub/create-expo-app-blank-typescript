@@ -35,23 +35,19 @@ jobs:
           # Get the last commit message
           LAST_COMMIT_MESSAGE=$(git log -1 --pretty=format:%s)
 
-          # Get the current and previous commit hashes (use alternative if needed)
+          # Get the commit range
           CURRENT_SHA=$(git rev-parse HEAD)
-          if [ $(git rev-list --count HEAD) -gt 1 ]; then
-            PREVIOUS_SHA=$(git rev-parse HEAD~1)
-          else
-            PREVIOUS_SHA=${CURRENT_SHA} # Fallback if there's only one commit
-          fi
+          FIRST_SHA=$(git rev-list --max-parents=0 HEAD)
 
           # Output to the environment
           echo "LAST_COMMIT_MESSAGE=${LAST_COMMIT_MESSAGE}" >> $GITHUB_ENV
           echo "CURRENT_SHA=${CURRENT_SHA}" >> $GITHUB_ENV
-          echo "PREVIOUS_SHA=${PREVIOUS_SHA}" >> $GITHUB_ENV
+          echo "FIRST_SHA=${FIRST_SHA}" >> $GITHUB_ENV
 
       - name: Run commitlint
         run: |
-          echo "Running commitlint from ${PREVIOUS_SHA} to ${CURRENT_SHA}"
-          yarn commitlint --from=${PREVIOUS_SHA} --to=${CURRENT_SHA}
+          echo "Running commitlint from ${FIRST_SHA} to ${CURRENT_SHA}"
+          yarn commitlint --from=${FIRST_SHA} --to=${CURRENT_SHA}
         continue-on-error: false
 
       - name: Send email on commitlint failure
@@ -65,7 +61,7 @@ jobs:
           subject: Commitlint failed in ${{ github.repository }}
           body: |
             Commitlint errors were detected in the latest commit(s) in the ${{ github.repository }} repository.
-            Commit range: ${PREVIOUS_SHA} to ${CURRENT_SHA}.
+            Commit range: ${FIRST_SHA} to ${CURRENT_SHA}.
             Last commit message: ${{ env.LAST_COMMIT_MESSAGE }}
           to: 'ceser446@gmail.com'
           from: ${{ secrets.MAIL_USERNAME }}
