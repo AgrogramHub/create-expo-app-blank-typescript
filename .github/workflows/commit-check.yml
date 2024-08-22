@@ -1,34 +1,47 @@
-name: Commit Message Check
+name: Commit Checks
 
 on:
   push:
     branches:
-      - master
+      - master # veya kullanmakta olduğunuz ana branch adı
     paths:
       - '**/*.ts'
-      - '.husky/commit-msg'
-  pull_request:
-    branches:
-      - master
+      - '.github/workflows/commit-check.yml'
+      - '.github/workflows/commit-template.txt'
 
 jobs:
-  commit-message-check:
+  check:
     runs-on: ubuntu-latest
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
 
-      - name: Set up Node.js
+      - name: Install Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: '18' # Node.js sürümünü ihtiyacınıza göre ayarlayın
+          node-version: '18' # Projenizin gereksinimlerine göre ayarlayın
 
       - name: Install dependencies
-        run: |
-          yarn install  # veya npm install, hangi package manager'ı kullanıyorsanız
+        run: yarn install
 
-      - name: Run commit message check
+      - name: Check commit message format
         run: |
-          npx ts-node .husky/check-tense-commit.ts "${{ github.event.head_commit.message }}"
-        env:
-          COMMIT_TEMPLATE_FILE: '.husky/commit-template.txt'
+          COMMIT_TEMPLATE_FILE=".github/workflows/commit-template.txt"
+          if [ -f "$COMMIT_TEMPLATE_FILE" ]; then
+            COMMIT_TEMPLATE=$(cat "$COMMIT_TEMPLATE_FILE")
+          else
+            echo "Commit template file not found."
+            exit 1
+          fi
+
+          npx --no-install commitlint --edit $1 || {
+            echo "$COMMIT_TEMPLATE"
+            exit 1
+          }
+
+      - name: Check commit tense
+        run: |
+          npx ts-node check-tense-commit.ts "$1" || {
+            exit 1
+          }
