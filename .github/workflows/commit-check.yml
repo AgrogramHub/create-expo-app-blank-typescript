@@ -3,13 +3,13 @@ name: Commit Message Check
 on:
   push:
     branches:
-      - main
+      - master
     paths:
       - '**/*.ts'
       - '.husky/commit-msg'
   pull_request:
     branches:
-      - main
+      - master
 
 jobs:
   commit-message-check:
