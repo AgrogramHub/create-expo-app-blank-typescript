@@ -36,7 +36,7 @@ jobs:
 
       - name: Run commitlint
         run: |
-          yarn commitlint --to ${{ github.sha }} --from ${{ github.event.before }}
+          git log -1 --pretty=%B | yarn commitlint
         continue-on-error: false
 
       - name: Send email on commitlint failure
