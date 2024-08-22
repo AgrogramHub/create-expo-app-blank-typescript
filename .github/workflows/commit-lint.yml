@@ -29,12 +29,18 @@ jobs:
       - name: Install dependencies
         run: yarn install --frozen-lockfile
 
-      - name: Get last commit
+      - name: Get last commit message
         run: |
-          LAST_COMMIT_MESSAGE=$(git log -1 --pretty=format:%s)
-          echo "Last commit message: ${LAST_COMMIT_MESSAGE}"
+          echo "Last commit message: $(git log -1 --pretty=format:%s)"
 
-      - name: Lint commits
+      - name: Run commitlint
         run: |
           echo "Running commitlint from ${GITHUB_EVENT_BEFORE} to ${GITHUB_SHA}"
           yarn commitlint --from=${GITHUB_EVENT_BEFORE} --to=${GITHUB_SHA}
+        continue-on-error: false
+
+      - name: Report errors
+        if: failure()
+        run: |
+          echo "Commitlint errors found" >> commitlint-errors.log
+           cat commitlint-errors.log
