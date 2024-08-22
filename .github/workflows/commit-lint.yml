@@ -30,18 +30,11 @@ jobs:
         run: yarn install --frozen-lockfile
 
       - name: Run commitlint
-        id: commitlint_check
         run: |
           git log -1 --pretty=%B | yarn commitlint
-        continue-on-error: false # Adım başarısız olsa bile iş akışı devam edecek
-
-      - name: Debugging Commitlint
-        if: ${{ always() }} # Bu adım her zaman çalışacak, commitlint sonucunu görmek için
-        run: |
-          echo "Commitlint outcome: ${{ steps.commitlint_check.outcome }}"
 
       - name: Send email on commitlint failure
-        if: ${{ steps.commitlint_check.outcome == 'failure' }}
+        if: failure()
         uses: dawidd6/action-send-mail@v3
         with:
           server_address: smtp.gmail.com
