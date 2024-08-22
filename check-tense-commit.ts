@@ -1,8 +1,11 @@
 import nlp from 'compromise';
 
 const commitMessage = process.argv[2];
+console.log(commitMessage);
 
 const doc = nlp(commitMessage);
+console.log(doc.verbs());
+
 const verbs = doc.verbs().out('array');
 console.log(verbs);
 
