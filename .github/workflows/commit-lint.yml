@@ -30,15 +30,9 @@ jobs:
         run: yarn install --frozen-lockfile
 
       - name: Determine commit range
-        id: determine-range
         run: |
-          if [ "${{ github.event_name }}" == "pull_request" ]; then
-            echo "GITHUB_EVENT_BEFORE=${{ github.event.pull_request.base.sha }}" >> $GITHUB_ENV
-            echo "GITHUB_SHA=${{ github.sha }}" >> $GITHUB_ENV
-          else
-            PREV_COMMIT=$(git rev-parse HEAD^1)
-            echo "GITHUB_EVENT_BEFORE=${PREV_COMMIT}" >> $GITHUB_ENV
-            echo "GITHUB_SHA=${{ github.sha }}" >> $GITHUB_ENV
+          if [ -z "${GITHUB_EVENT_BEFORE}" ]; then
+            export GITHUB_EVENT_BEFORE=$(git rev-parse origin/${GITHUB_BASE_REF})
           fi
           echo "Commit range is ${GITHUB_EVENT_BEFORE}..${GITHUB_SHA}"
 
