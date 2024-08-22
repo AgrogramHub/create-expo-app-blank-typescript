@@ -39,8 +39,19 @@ jobs:
           yarn commitlint --from=${GITHUB_EVENT_BEFORE} --to=${GITHUB_SHA}
         continue-on-error: false
 
-      - name: Report errors
+      - name: Send email on commitlint failure
         if: failure()
-        run: |
-          echo "Commitlint errors found" >> commitlint-errors.log
-           cat commitlint-errors.log
+        uses: dawidd6/action-send-mail@v3
+        with:
+          server_address: smtp.gmail.com
+          server_port: 587
+          username: ${{ secrets.MAIL_USERNAME }}
+          password: ${{ secrets.MAIL_PASSWORD }}
+          subject: Commitlint failed in ${{ github.repository }}
+          body: |
+            Commitlint errors were detected in the latest commit(s) in the ${{ github.repository }} repository.
+            Commit range: ${GITHUB_EVENT_BEFORE} to ${GITHUB_SHA}.
+            Last commit message: $(git log -1 --pretty=format:%s)
+          to: 'ceser446@gmail.com'
+          from: ${{ secrets.MAIL_USERNAME }}
+          secure: true
