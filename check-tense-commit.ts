@@ -7,7 +7,7 @@ if (!commitMessageFile) {
   process.exit(1);
 }
 
-let commitMessage: string; // Read the commit message from the file
+let commitMessage: string;
 
 try {
   commitMessage = fs.readFileSync(commitMessageFile, 'utf8').trim();
@@ -16,32 +16,37 @@ try {
   process.exit(1);
 }
 
-const doc = nlp(commitMessage.split(':')[1].trim());
-const verbs = doc.verbs().terms().out('array');
+// 'feat(commit-template):' gibi başlık ve kapsam kısmını atla
+const messageBody = commitMessage.split(':')[1]?.trim() || '';
+console.log('Message body:', messageBody); // Debug line
 
-if (verbs.length === 0) {
+// Mesajı kelimelere ayır
+const tokens = messageBody.split(/\s+/);
+console.log('Tokens:', tokens); // Debug line
+
+// Fiil olup olmadığını kontrol et
+const doc = nlp(messageBody);
+const verbs = doc.verbs().out('array');
+console.log('Verbs:', verbs); // Debug line
+
+const hasVerb = tokens.some((token) => {
+  return verbs.includes(token);
+});
+
+if (!hasVerb) {
   console.log('Commit message must contain at least one verb');
   process.exit(1);
 }
 
-const presentTenseMessage = nlp(commitMessage.split(':')[1])
-  .verbs()
-  .toPresentTense()
-  .out('text');
-console.log('Present Tense: ' + presentTenseMessage);
-
-const isPastTense = nlp(presentTenseMessage)
-  .verbs()
-  .some((verb) => {
-    const pastTense = nlp(verb.toString()).verbs().toPastTense().out('text');
-    return pastTense === verb;
-  });
+// Geçmiş zaman kontrolü
+const isPastTense = verbs.some((verb: string) => {
+  const pastTense = nlp(verb).verbs().toPastTense().out('text');
+  return pastTense === verb;
+});
 
 if (isPastTense) {
-  console.log('Commit message is still in past tense');
+  console.log('Commit message is in past tense. Verb:', verbs.join(', '));
   process.exit(1);
 } else {
-  // Save the corrected message back to the file
-  fs.writeFileSync(commitMessageFile, presentTenseMessage);
-  console.log('Success: ' + presentTenseMessage);
+  console.log('Success: ' + commitMessage);
 }
