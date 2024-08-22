@@ -26,6 +26,6 @@ npx --no-install commitlint --edit $1 || {
 exit 1
 }
 
-npx --no-install ts-node check-tense-commit.ts "$1" || {
+ts-node check-tense-commit.ts "$1" || {
 exit 1
 }
