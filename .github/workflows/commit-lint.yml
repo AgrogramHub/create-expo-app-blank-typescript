@@ -32,9 +32,17 @@ jobs:
       - name: Get commit details
         id: commit_details
         run: |
-          echo "LAST_COMMIT_MESSAGE=$(git log -1 --pretty=format:%s)" >> $GITHUB_ENV
-          echo "GITHUB_EVENT_BEFORE=${GITHUB_EVENT_BEFORE}" >> $GITHUB_ENV
-          echo "GITHUB_SHA=${GITHUB_SHA}" >> $GITHUB_ENV
+          # Get the last commit message
+          LAST_COMMIT_MESSAGE=$(git log -1 --pretty=format:%s)
+
+          # Get the current and previous commit hashes
+          CURRENT_SHA=$(git rev-parse HEAD)
+          PREVIOUS_SHA=$(git rev-parse HEAD~1)
+
+          # Output to the environment
+          echo "LAST_COMMIT_MESSAGE=${LAST_COMMIT_MESSAGE}" >> $GITHUB_ENV
+          echo "CURRENT_SHA=${CURRENT_SHA}" >> $GITHUB_ENV
+          echo "PREVIOUS_SHA=${PREVIOUS_SHA}" >> $GITHUB_ENV
 
       - name: Run commitlint
         run: |
