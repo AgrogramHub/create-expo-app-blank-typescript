@@ -36,8 +36,8 @@ jobs:
         run: yarn typedoc
 
       - name: Deploy documentation
-        uses: peaceiris/actions-gh-pages@v3
+        uses: JamesIves/github-pages-deploy-action@v4
         with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./docs
-          force_orphan: true
+          branch: master
+          folder: docs
+          token: ${{ secrets.GITHUB_TOKEN }}
