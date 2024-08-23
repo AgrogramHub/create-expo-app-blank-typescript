@@ -1,6 +1,9 @@
 # github_pages kullanabilmek için reponun public olması gerekmektedir.
 # Daha sonra reponun settings kısmından github pages kısmını aktif hale getirin.
 # Orada master branch ve /docs klasörü seçili olmalıdır.
+# DEPLOY_TOKEN adında bir secret oluşturun ve içine github tokeninizi ekleyin.
+# Bu tokeni oluştururken repo erişimi vermelisiniz.
+# Bu tokeni Github Settings -> Developer Settings -> Personal Access Tokens -> Generate new token kısmından oluşturabilirsiniz.
 name: TypeDoc
 
 on:
