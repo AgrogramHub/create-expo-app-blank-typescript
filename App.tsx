@@ -26,6 +26,10 @@ import ExpoLogo from './assets/expo.svg';
  * ```tsx
  * import { App } from '@/App';
  * ```
+ * @example
+ * ```tsx
+ * conlsole.log('mces58');
+ * ```
  */
 export default function App(): JSX.Element {
   return (
