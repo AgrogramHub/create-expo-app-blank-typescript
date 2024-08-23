@@ -1,3 +1,6 @@
+# github_pages kullanabilmek için reponun public olması gerekmektedir.
+# Daha sonra reponun settings kısmından github pages kısmını aktif hale getirin.
+# Orada master branch ve /docs klasörü seçili olmalıdır.
 name: TypeDoc
 
 on:
