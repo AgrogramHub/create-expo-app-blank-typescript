@@ -30,7 +30,7 @@ jobs:
         run: yarn install
 
       - name: Run Prettier
-        run: yarn prettier --write .
+        run: yarn prettier . --write
 
       - name: Run ESLint
-        run: yarn eslint .
+        run: yarn eslint . --fix
