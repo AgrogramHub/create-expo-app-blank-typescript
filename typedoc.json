@@ -11,6 +11,5 @@
   "readme": "README.md",
   "customFooterHtml": "<div style='text-align: center;'><p>Copyright <strong>Project</strong> 2024</p></div>",
   "customFooterHtmlDisableWrapper": true,
-  "hideGenerator": true,
-  "watch": true
+  "hideGenerator": true
 }
