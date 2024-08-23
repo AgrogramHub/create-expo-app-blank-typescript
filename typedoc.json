@@ -1,0 +1,16 @@
+{
+  "entryPoints": ["./App.tsx"],
+  "out": "docs",
+  "exclude": ["node_modules", "test", "dist", "docs"],
+  "excludePrivate": true,
+  "excludeProtected": false,
+  "excludeExternals": true,
+  "includeVersion": true,
+  "name": "Proje Adı",
+  "theme": "default",
+  "readme": "README.md",
+  "customFooterHtml": "<div style='text-align: center;'><p>Copyright <strong>Project</strong> 2024</p></div>",
+  "customFooterHtmlDisableWrapper": true,
+  "hideGenerator": true,
+  "watch": true
+}
