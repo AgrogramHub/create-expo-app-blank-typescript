@@ -4,6 +4,7 @@
 # DEPLOY_TOKEN adında bir secret oluşturun ve içine github tokeninizi ekleyin.
 # Bu tokeni oluştururken repo erişimi vermelisiniz.
 # Bu tokeni Github Settings -> Developer Settings -> Personal Access Tokens -> Generate new token kısmından oluşturabilirsiniz.
+# master branch'ı hata verirse gh-pages adında bir branch oluşturun ve onu seçin ve /docs klasörünü seçin.
 name: TypeDoc
 
 on:
