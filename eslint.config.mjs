@@ -32,7 +32,7 @@ export default [
       '@typescript-eslint/no-unused-vars': 'error',
       'react/jsx-uses-react': 'error',
       'react/react-in-jsx-scope': 'error',
-      semi: ['error', 'always'],
+      semi: ['error', 'never'],
       '@typescript-eslint/no-require-imports': 'error',
       '@typescript-eslint/no-var-requires': 'error',
       '@typescript-eslint/consistent-type-exports': 'error',
