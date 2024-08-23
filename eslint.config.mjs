@@ -22,6 +22,7 @@ export default [
       'node_modules/',
       'build/',
       'dist/',
+      'docs/**/*',
       'webpack.config.js',
       'metro.config.js',
       'babel.config.js',

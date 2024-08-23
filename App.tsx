@@ -7,6 +7,26 @@ import Button from '@/Button';
 
 import ExpoLogo from './assets/expo.svg';
 
+/**
+ * App bileşeni, uygulamanın ana bileşenini temsil eder.
+ * @returns JSX.Element - Uygulamanın render edilen ana bileşeni.
+ * @see https://reactnative.dev/docs/statusbar
+ * @see https://styled-components.com/docs/api#styled
+ *
+ * @example
+ * ```tsx
+ * <App />
+ * ```
+ * @example
+ * ```tsx
+ * import App from '@/App';
+ * export default App;
+ * ```
+ * @example
+ * ```tsx
+ * import { App } from '@/App';
+ * ```
+ */
 export default function App(): JSX.Element {
   return (
     <Container>
