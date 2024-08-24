@@ -24,6 +24,8 @@ export default [
       'dist/',
       'docs/**/*',
       '.storybook/**/*',
+      '.storybook-web/**/*',
+      '.out/**/*',
       '**/*.stories.*',
       'webpack.config.js',
       'metro.config.js',
