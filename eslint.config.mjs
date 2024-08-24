@@ -23,6 +23,8 @@ export default [
       'build/',
       'dist/',
       'docs/**/*',
+      '.storybook/**/*',
+      '**/*.stories.*',
       'webpack.config.js',
       'metro.config.js',
       'babel.config.js',
@@ -111,7 +113,7 @@ export default [
         },
         {
           selector: 'variable',
-          format: ['camelCase', 'UPPER_CASE'],
+          format: ['camelCase', 'UPPER_CASE', 'PascalCase'],
         },
         {
           selector: 'parameter',
