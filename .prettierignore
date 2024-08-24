@@ -5,3 +5,4 @@ README.md
 .env
 yarn.lock
 docs
+.out
