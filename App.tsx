@@ -1,11 +1,14 @@
 import React from 'react';
 
+import Constants from 'expo-constants';
 import { StatusBar } from 'expo-status-bar';
 import styled from 'styled-components/native';
 
 import Button from '@/Button';
 
 import ExpoLogo from './assets/expo.svg';
+
+import * as storybook from './.storybook';
 
 /**
  * App bileşeni, uygulamanın ana bileşenini temsil eder.
@@ -31,7 +34,7 @@ import ExpoLogo from './assets/expo.svg';
  * conlsole.log('mces58');
  * ```
  */
-export default function App(): JSX.Element {
+const App = (): React.ReactNode => {
   return (
     <Container>
       <StatusBar style="auto" backgroundColor="red" />
@@ -43,7 +46,15 @@ export default function App(): JSX.Element {
       <Button children={<></>} color="red" />
     </Container>
   );
+};
+
+let AppEntryPoint = App;
+
+if (Constants?.expoConfig?.extra?.storybookEnabled === 'true') {
+  AppEntryPoint = storybook.default;
 }
+
+export default AppEntryPoint;
 
 const Container = styled.View({
   flex: 1,
