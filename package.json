@@ -11,10 +11,10 @@
     "prepare": "husky",
     "lint": "eslint . --fix",
     "prettier": "prettier --write .",
-    "docs": "typedoc",
+    "typedoc:build": "typedoc",
     "storybook-generate": "sb-rn-get-stories",
     "storybook:web": "start-storybook -p 6006 -c .storybook-web",
-    "storybook:build": "build-storybook -c .storybook-web -o .out"
+    "storybook:build": "build-storybook -c .storybook-web -o docs/storybook"
   },
   "dependencies": {
     "expo": "~51.0.28",

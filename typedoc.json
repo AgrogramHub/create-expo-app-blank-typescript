@@ -1,6 +1,6 @@
 {
   "entryPoints": ["./App.tsx"],
-  "out": "docs",
+  "out": "docs/typedoc",
   "exclude": ["node_modules", "test", "dist", "docs"],
   "excludePrivate": true,
   "excludeProtected": false,
