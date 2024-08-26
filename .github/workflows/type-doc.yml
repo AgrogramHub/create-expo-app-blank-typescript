@@ -1,4 +1,4 @@
-name: Deploy Docs and Storybook to GitHub Pages
+name: Deploy TypeDoc
 
 on:
   push:
@@ -22,15 +22,14 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Build TypeDoc
-        run: |
-          yarn install
-          yarn typedoc
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+          cache: 'yarn'
 
-      - name: Build Storybook
-        run: |
-          yarn install
-          yarn storybook:build
+      - name: Build TypeDoc
+        run: yarn typedoc:build
 
       - name: Setup Pages
         uses: actions/configure-pages@v5
@@ -38,9 +37,7 @@ jobs:
       - name: Upload TypeDoc artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: |
-            'docs/typedoc'
-            'docs/storybook'
+          path: docs/typedoc
 
       - name: Deploy to GitHub Pages
         id: deployment
