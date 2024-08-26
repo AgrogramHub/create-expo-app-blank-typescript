@@ -32,3 +32,19 @@ jobs:
 
       - name: Run ESLint
         run: yarn eslint . --fix
+
+      - name: Send email ESLint and Prettier
+        if: failure()
+        uses: dawidd6/action-send-mail@v3
+        with:
+          server_address: smtp.gmail.com
+          server_port: 465
+          username: ${{ secrets.MAIL_USERNAME }}
+          password: ${{ secrets.MAIL_PASSWORD }}
+          subject: ESLint and Prettier failed in ${{ github.repository }}
+          body: |
+            ESLint and Prettier failed in ${{ github.repository }}.
+            Check the logs for more information.
+          to: 'ceser446@gmail.com'
+          from: ${{ secrets.MAIL_USERNAME }}
+          attachments: 'eslint.log, prettier.log'
