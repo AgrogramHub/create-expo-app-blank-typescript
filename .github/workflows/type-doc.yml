@@ -24,8 +24,8 @@ jobs:
 
       - name: Build TypeDoc
         run: |
-          npm install
-          npx typedoc --out docs/typedoc src
+          yarn install
+          yarn typedoc
 
       - name: Setup Pages
         uses: actions/configure-pages@v5
