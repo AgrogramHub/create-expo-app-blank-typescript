@@ -14,7 +14,7 @@
     "docs": "typedoc",
     "storybook-generate": "sb-rn-get-stories",
     "storybook:web": "start-storybook -p 6006 -c .storybook-web",
-    "build-storybook": "build-storybook -c .storybook-web -o .out"
+    "storybook:build": "build-storybook -c .storybook-web -o .out"
   },
   "dependencies": {
     "expo": "~51.0.28",
