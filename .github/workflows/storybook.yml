@@ -37,12 +37,12 @@ jobs:
       - name: Install dependencies
         run: yarn install
 
-      - name: Run TypeDoc
-        run: yarn typedoc
+      - name: Run Storybook
+        run: yarn storybook:build
 
-      - name: Deploy documentation
+      - name: Deploy storybook
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.DEPLOY_TOKEN }}
-          publish_dir: ./docs
+          publish_dir: ./storybook-static
           force_orphan: true
