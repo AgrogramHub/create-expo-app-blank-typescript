@@ -29,7 +29,7 @@ jobs:
           cache: 'yarn'
 
       - name: Build TypeDoc
-        run: yarn typedoc:build
+        run: yarn typedoc
 
       - name: Setup Pages
         uses: actions/configure-pages@v5
