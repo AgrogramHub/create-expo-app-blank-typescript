@@ -30,7 +30,7 @@ jobs:
         run: yarn install --frozen-lockfile
 
       - name: Run commitlint
-        run: yarn commitlint --from $(git merge-base HEAD origin/master) --to HEAD --verbose
+        run: yarn commitlint --from ${{ github.event.before }} --to ${{ github.sha }}
 
       - name: Send email on commitlint failure
         if: failure()
