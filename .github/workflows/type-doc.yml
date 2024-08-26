@@ -32,7 +32,7 @@ jobs:
         run: yarn install
 
       - name: Build TypeDoc
-        run: yarn typedoc
+        run: yarn typedoc:build
 
       - name: Setup Pages
         uses: actions/configure-pages@v5
