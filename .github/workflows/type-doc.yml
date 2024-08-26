@@ -1,4 +1,4 @@
-name: Deploy TypeDoc to GitHub Pages
+name: Deploy Docs and Storybook to GitHub Pages
 
 on:
   push:
@@ -29,7 +29,7 @@ jobs:
           cache: 'yarn'
 
       - name: Build TypeDoc
-        run: yarn typedoc:build
+        run: yarn typedoc
 
       - name: Build Storybook
         run: yarn storybook:build
