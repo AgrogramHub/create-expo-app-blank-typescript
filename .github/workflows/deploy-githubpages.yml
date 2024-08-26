@@ -23,7 +23,7 @@ jobs:
         run: yarn install
 
       - name: Build Storybook
-        run: yarn build-storybook
+        run: yarn storybook:build
 
       - name: Verify Storybook output directory
         run: ls -la
