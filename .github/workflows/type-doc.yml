@@ -5,7 +5,7 @@
 # Bu tokeni oluştururken repo erişimi vermelisiniz.
 # Bu tokeni Github Settings -> Developer Settings -> Personal Access Tokens -> Generate new token kısmından oluşturabilirsiniz.
 # Çıkan tokeni reponuzun secrets kısmına ekleyin.
-# Token sürelidir. Süresi dolduğunda yeni bir token oluşturmanız gerekecektir.
+# Token sürelidir. Süresi dolduğunda yeni bir token oluşturmanız gerekecektir
 name: TypeDoc
 
 on:
