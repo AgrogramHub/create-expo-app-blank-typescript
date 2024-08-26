@@ -2,7 +2,6 @@
   "name": "create-expo-app-blank-typescript",
   "version": "1.0.0",
   "main": "expo/AppEntry.js",
-  "homepage": "https://github.com/AgrogramHub/create-expo-app-blank-typescript",
   "scripts": {
     "start": "expo start",
     "start:storybook": "cross-env STORYBOOK_ENABLED=true expo start",
