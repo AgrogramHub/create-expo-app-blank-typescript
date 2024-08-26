@@ -1,33 +1,26 @@
-# typedoc için oluşturulmuş bir actiondır.
-# github_pages kullanabilmek için reponun public olması gerekmektedir.
-# Daha sonra reponun settings kısmından github pages kısmını aktif hale getirin.
-# Orada master branch ve /docs klasörü seçili olmalıdır.
-# DEPLOY_TOKEN adında bir secret oluşturun ve içine github tokeninizi ekleyin.
-# Bu tokeni oluştururken repo erişimi vermelisiniz.
-# Bu tokeni Github Settings -> Developer Settings -> Personal Access Tokens -> Generate new token kısmından oluşturabilirsiniz.
-# Çıkan tokeni reponuzun secrets kısmına ekleyin.
-# Token sürelidir. Süresi dolduğunda yeni bir token oluşturmanız gerekecektir
-name: TypeDoc
+name: Deploy TypeDoc
 
 on:
   push:
     branches:
       - master
-      - main
-      - dev
-  pull_request:
-    branches:
-      - master
-      - main
-      - dev
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: 'pages'
+  cancel-in-progress: false
 
 jobs:
-  lint:
+  deploy:
     runs-on: ubuntu-latest
-
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
+      - name: Checkout repository
+        uses: actions/checkout@v4
 
       - name: Set up Node.js
         uses: actions/setup-node@v3
@@ -38,11 +31,17 @@ jobs:
       - name: Install dependencies
         run: yarn install
 
-      - name: Run TypeDoc
+      - name: Build TypeDoc
         run: yarn typedoc:build
 
-      - name: Deploy documentation
-        uses: peaceiris/actions-gh-pages@v3
+      - name: Setup Pages
+        uses: actions/configure-pages@v5
+
+      - name: Upload TypeDoc artifact
+        uses: actions/upload-pages-artifact@v3
         with:
-          github_token: ${{ secrets.DEPLOY_TOKEN }}
-          publish_dir: ./docs
+          path: docs/typedoc
+
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
