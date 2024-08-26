@@ -3,7 +3,7 @@ name: Deploy to GitHub Pages
 on:
   push:
     branches:
-      - master # Sadece `main` dalına push yapıldığında çalıştırır
+      - main # Sadece `main` dalına push yapıldığında çalıştırır
 
 jobs:
   deploy:
@@ -23,16 +23,22 @@ jobs:
         run: yarn install
 
       - name: Build Storybook
-        run: yarn storybook:build
+        run: yarn build-storybook
+
+      - name: Verify Storybook output directory
+        run: ls -la
+
+      - name: Create directories if not exist
+        run: mkdir -p public/storybook public/docs
+
+      - name: Move Storybook to public directory
+        run: mv .out/* public/storybook
 
       - name: Build TypeDoc
         run: yarn typedoc
 
-      - name: Move Storybook to public directory
-        run: mv .out public/storybook
-
       - name: Move TypeDoc to public directory
-        run: mv docs public/docs
+        run: mv docs/* public/docs
 
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
