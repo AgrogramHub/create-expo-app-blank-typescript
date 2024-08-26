@@ -1,3 +1,4 @@
+# typedoc için oluşturulmuş bir actiondır.
 # github_pages kullanabilmek için reponun public olması gerekmektedir.
 # Daha sonra reponun settings kısmından github pages kısmını aktif hale getirin.
 # Orada master branch ve /docs klasörü seçili olmalıdır.
@@ -44,5 +45,4 @@ jobs:
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.DEPLOY_TOKEN }}
-          publish_dir: ./docs/typedoc
-          force_orphan: true
+          publish_dir: ./docs
