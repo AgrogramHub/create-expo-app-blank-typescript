@@ -38,7 +38,7 @@ jobs:
         run: yarn install
 
       - name: Run TypeDoc
-        run: yarn typedoc
+        run: yarn typedoc:build
 
       - name: Deploy documentation
         uses: peaceiris/actions-gh-pages@v3
