@@ -29,9 +29,8 @@ jobs:
       - name: Install dependencies
         run: yarn install --frozen-lockfile
 
-      - name: Run commitlint on all commits
-        run: |
-          git log --pretty=%B $(git merge-base HEAD origin/${{ github.event.pull_request.base.ref || 'master' }})..HEAD | yarn commitlint
+      - name: Run commitlint
+        run: yarn commitlint --from ${{ github.event.before }} --to ${{ github.sha }}
 
       - name: Send email on commitlint failure
         if: failure()
