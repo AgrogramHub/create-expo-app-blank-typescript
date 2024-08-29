@@ -41,9 +41,8 @@ jobs:
           server_port: 465
           username: ${{ secrets.MAIL_USERNAME }}
           password: ${{ secrets.MAIL_PASSWORD }}
-          html_body: true
           subject: Action Failed ESLint and Prettier Checks
-          body: |
+          html_body: |
             <html>
             <head>
               <style>
