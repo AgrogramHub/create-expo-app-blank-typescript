@@ -29,11 +29,11 @@ jobs:
 
       - name: Run Prettier and save log
         run: |
-          yarn prettier > prettier.log || true
+          yarn prettier . --write > prettier.log || true
 
       - name: Run ESLint and save log
         run: |
-          yarn lint > eslint.log || true
+          yarn eslint . > eslint.log || true
 
       - name: Archive logs
         if: failure()
