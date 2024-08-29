@@ -27,19 +27,15 @@ jobs:
       - name: Install dependencies
         run: yarn install
 
-      - name: Run Prettier and save log
+      - name: Run Prettier
         run: |
-          yarn prettier . --write > prettier.log || true
+          yarn prettier > prettier.log 2>&1
 
-      - name: Run ESLint and save log
+      - name: Run ESLint
         run: |
-          yarn eslint . > eslint.log || true
+          yarn lint > eslint.log 2>&1
 
-      - name: Archive logs
-        if: failure()
-        run: tar -czf logs.tar.gz eslint.log prettier.log
-
-      - name: Send email if ESLint or Prettier fails
+      - name: Send email ESLint and Prettier
         if: failure()
         uses: dawidd6/action-send-mail@v3
         with:
@@ -87,6 +83,11 @@ jobs:
                 <h1>ESLint and Prettier Checks Failed</h1>
                 <p>Dear Team,</p>
                 <p>The recent ESLint and Prettier checks for the repository <strong>${{ github.repository }}</strong> have failed. Please review the attached logs to identify and resolve the issues.</p>
+                <p>Logs:</p>
+                <ul>
+                  <li><strong>ESLint Log:</strong> eslint.log</li>
+                  <li><strong>Prettier Log:</strong> prettier.log</li>
+                </ul>
                 <p>Thank you for your attention to this matter.</p>
                 <p>Best regards,<br/>
                 The CI/CD Team</p>
@@ -98,4 +99,4 @@ jobs:
             </html>
           to: 'ceser446@gmail.com'
           from: ${{ secrets.MAIL_USERNAME }}
-          attachments: 'logs.tar.gz'
+          attachments: 'eslint.log, prettier.log'
