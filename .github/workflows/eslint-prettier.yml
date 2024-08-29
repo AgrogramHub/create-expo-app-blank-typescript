@@ -28,12 +28,10 @@ jobs:
         run: yarn install
 
       - name: Run Prettier
-        run: |
-          yarn prettier > prettier.log 2>&1
+        run: yarn prettier > prettier.log 2>&1
 
       - name: Run ESLint
-        run: |
-          yarn lint > eslint.log 2>&1
+        run: yarn lint > eslint.log 2>&1
 
       - name: Send email ESLint and Prettier
         if: failure()
